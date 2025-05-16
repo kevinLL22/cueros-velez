@@ -42,7 +42,6 @@ cd nombre-del-proyecto
      PRIMARY KEY (id)
    );
    ```
-3. Opcional: añade otras tablas según tu modelo de datos.
 
 ---
 
@@ -51,6 +50,7 @@ cd nombre-del-proyecto
 El proyecto carga propiedades desde `src/main/resources/application.properties` o `application.yml`. Edita las siguientes claves:
 
 ```properties
+# URL de conexión (ajusta host, puerto y nombre de BD)
 spring.datasource.url=jdbc:mysql://localhost:3306/cueros_velez
 spring.datasource.username=tu_usuario
 spring.datasource.password=tu_contraseña
@@ -70,9 +70,6 @@ vtex.scheduler.cron=0 0 * * * *
 # O también fixedRate en milisegundos
 dashboard.scheduler.rate=3600000
 ```
-
-> **Nota**: En producción normalmente usarás `ddl-auto=validate` y migraciones con Flyway o Liquibase.
-
 ---
 
 ## Compilar y ejecutar
@@ -113,17 +110,6 @@ El servicio incluye un scheduler que ejecuta automáticamente `VTEXService.proce
 
 ---
 
-## Pruebas
-
-* **Unit tests** con JUnit y MockMvc:
-
-  ```bash
-  mvn test
-  ```
-* **Integración** con TestRestTemplate en `@SpringBootTest`.
-
----
-
 ## FAQ
 
 * **¿Cómo cambio la frecuencia del scheduler?**
@@ -134,11 +120,3 @@ El servicio incluye un scheduler que ejecuta automáticamente `VTEXService.proce
 
 ---
 
-## Contribuciones y licencias
-
-* Forkea el proyecto, crea una rama con tu feature o fix, y abre un pull request.
-* Licencia: MIT
-
----
-
-*Cualquier duda o mejora, crea un issue o contáctame en el repositorio.*
