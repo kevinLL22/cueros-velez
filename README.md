@@ -165,7 +165,16 @@ http://localhost:8080/export?start=2023-05-01T00:00:00&end=2025-05-16T23:59:59
 ![img.png](src/main/resources/img.png)
 - El archivo contiene las columnas product_id, creation_date, warehouse y destination.
 - Con esos datos podrá saber el origen y destino de cada producto.
+---
+## pregunta de IA
 
+- Escenario:
+  "Queremos identificar qué productos tienen un patrón de distribución atípico (por ejemplo, salen mucho desde almacenes inusuales o van a ciudades donde normalmente no hay ventas). Imagina que ya tienes todos los datos logísticos almacenados."
+- Entrenaría al modelo para obtener un vector de características, por ejemplo, a dónde suele ir el producto x cuando está almacenado en la ciudad Y; cuánta cantidad es comprada, con qué frecuencia. Etc. es decir, obtendría vectores del comportamiento típico.
+  Después el modelo calcularía que tanto se desvía un producto de este comportamiento esperado.
+- 
+  Y no, no sería parte del backend, las tareas con IA consumen capacidad de procesamiento que puede volver más lentos otros procesos; serían dos tareas distintas en un solo backend, eso implicaría haces deploy innecesarios al actualizar uno de los dos servicios. En definitiva, a la IA no le debería interesar cómo ese dato se guardó en la base de datos, sino cómo se comporta ese dato con relación a los otros.
+---
 ## pregunta final
 - "Si tuvieras libertad total para mejorar un proceso digital en ecommerce usando backend + datos + inteligencia artificial, ¿qué harías y cómo lo llevarías a cabo?"
 - Implementar un motor de recomendaciones personalizado para aumentar el ticket promedio y la retención de clientes, aprovechando datos de navegación y compras previas y compras similares de perfiles que coincidan. 
