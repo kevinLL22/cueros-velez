@@ -16,9 +16,8 @@ Este proyecto es un servicio backend en Spring Boot que automatiza la recopilaci
 ## Clonar el repositorio
 
 ```bash
-git clone https://tu-repositorio.git
+git clone https://github.com/kevinLL22/cueros-velez.git
 git checkout main
-cd nombre-del-proyecto
 ```
 
 ---
@@ -36,7 +35,7 @@ cd nombre-del-proyecto
    CREATE TABLE product_origin_destination (
      id BIGINT NOT NULL AUTO_INCREMENT,
      product_id BIGINT,
-     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     creation_date TIMESTAMP DEFAULT NULL,
      warehouse VARCHAR(50),
      destination VARCHAR(50),
      PRIMARY KEY (id)
@@ -57,8 +56,7 @@ spring.datasource.password=tu_contraseña
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 # URL de la API a consumir
-api.url=https: URL_valida
-api.url2=https://cuerosvelezco.vtexcommercestable.com.br/api/oms/pvt/orders/
+api.url=https://cuerosvelezco.vtexcommercestable.com.br/api/oms/pvt/orders/
 api.token= token vigente
 
 # Pool HikariCP
@@ -101,10 +99,10 @@ java -jar target/nombre-del-proyecto-0.0.1-SNAPSHOT.jar
   * Es indispensable recibir una url válida en el body de la petición.
   * Ejemplo de body:
 
-    ```json
-    {
-      "url": "https://{accountName}.vtexcommercestable.com.br/api/oms/pvt/orders?per_page=100&f_invoicedDate=invoicedDate%3A%5B2024-01-01T00%3A00%3A00.000Z%20TO%202024-01-31T23%3A59%3A59.999Z%5D&f_status=invoiced"
-    }
+    ```text
+    
+      {accountName}.vtexcommercestable.com.br/api/oms/pvt/orders?per_page=100&f_invoicedDate=invoicedDate%3A%5B2024-01-01T00%3A00%3A00.000Z%20TO%202024-01-31T23%3A59%3A59.999Z%5D&f_status=invoiced
+    
     ```
 
 * **GET** `/api/product-origins/export?start={fecha}&end={fecha}`:
@@ -139,4 +137,31 @@ El servicio incluye un scheduler que ejecuta automáticamente `VTEXService.proce
   - **warehouse**: El nombre del almacén de origen.
   - **destination**: El destino del producto.
 * Con estos datos es suficiente para tener una trazabilidad producto-origen-destino.
+* Por qué retornar un excel: 
+  - El excel es un formato ampliamente utilizado y fácil de manejar para la mayoría de los usuarios. Permite una visualización clara y ordenada de los datos, facilitando su análisis y manipulación.
+  - Además, el uso de Excel permite a los usuarios realizar operaciones adicionales, como filtrado, ordenamiento y gráficos, sin necesidad de herramientas adicionales.
 
+## Ejemplos de uso
+* **Ejemplo de llamada a la API**:
+
+- en postman llamar como "post" a la url: http://localhost:8080/VTEX/process
+- Agregar como body en raw el siguiente texto:
+
+```text 
+https://{accountName}.vtexcommercestable.com.br/api/oms/pvt/orders?per_page=100&f_invoicedDate=invoicedDate%3A%5B2024-01-01T00%3A00%3A00.000Z%20TO%202024-01-31T23%3A59%3A59.999Z%5D&f_status=invoiced
+```
+- Cambiar {accountName} por el nombre de la cuenta de VTEX.
+- Ejecutar la llamada y verificar que se haya guardado en la base de datos.
+
+* **Ejemplo obtener excel**:
+* Realizar una petición GET a la siguiente URL:
+
+```text
+http://localhost:8080/export?start=2023-05-01T00:00:00&end=2025-05-16T23:59:59
+```
+- Cambiar las fechas por las que necesites.
+- Ejecutar la llamada y verificar que se descargue un archivo excel con los datos de la base de datos.
+- obtendrá un archivo parecido a este
+![img.png](src/main/resources/img.png)
+- El archivo contiene las columnas product_id, creation_date, warehouse y destination.
+- Con esos datos podrá saber el origen y destino de cada producto.
