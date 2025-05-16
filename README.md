@@ -161,7 +161,8 @@ http://localhost:8080/export?start=2023-05-01T00:00:00&end=2025-05-16T23:59:59
 ```
 - Cambiar las fechas por las que necesites.
 - Ejecutar la llamada y verificar que se descargue un archivo excel con los datos de la base de datos.
-- obtendrá un archivo parecido a este
+- obtendrá un archivo parecido a este:
+  
 ![img.png](src/main/resources/img.png)
 - El archivo contiene las columnas product_id, creation_date, warehouse y destination.
 - Con esos datos podrá saber el origen y destino de cada producto.
@@ -192,3 +193,6 @@ Desarrollo del backend
 Configura productores y consumidores de Kafka.
 Implementa el endpoint /recommendations/{userId} que invoque al modelo.
 Añade Redis para cachear.
+
+---
+lopez.kevin.45678@gmail.com
