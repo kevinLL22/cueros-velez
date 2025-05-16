@@ -98,6 +98,14 @@ java -jar target/nombre-del-proyecto-0.0.1-SNAPSHOT.jar
 
   * Ejecuta manualmente la tarea de recopilación de datos.
   * Respuesta: HTTP 202 Accepted.
+  * Es indispensable recibir una url válida en el body de la petición.
+  * Ejemplo de body:
+
+    ```json
+    {
+      "url": "https://{accountName}.vtexcommercestable.com.br/api/oms/pvt/orders?per_page=100&f_invoicedDate=invoicedDate%3A%5B2024-01-01T00%3A00%3A00.000Z%20TO%202024-01-31T23%3A59%3A59.999Z%5D&f_status=invoiced"
+    }
+    ```
 
 * **GET** `/api/product-origins/export?start={fecha}&end={fecha}`:
 
@@ -121,4 +129,14 @@ El servicio incluye un scheduler que ejecuta automáticamente `VTEXService.proce
   En las propiedades `spring.datasource.hikari.*`.
 
 ---
+
+## justificación de decisiones técnicas
+* **Spring Boot**: Framework robusto y ampliamente utilizado para aplicaciones backend.
+* **JPA/Hibernate**: Simplifica la interacción con la base de datos y permite un mapeo objeto-relacional eficiente.
+* información guardada en base de datos: 
+  - **product_id**: proporciona un id para diferenciar un producto de otro.
+  - **creation_date**: permite saber cuándo se creo la factura y filtrar por fechas
+  - **warehouse**: El nombre del almacén de origen.
+  - **destination**: El destino del producto.
+* Con estos datos es suficiente para tener una trazabilidad producto-origen-destino.
 
