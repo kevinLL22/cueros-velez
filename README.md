@@ -165,3 +165,21 @@ http://localhost:8080/export?start=2023-05-01T00:00:00&end=2025-05-16T23:59:59
 ![img.png](src/main/resources/img.png)
 - El archivo contiene las columnas product_id, creation_date, warehouse y destination.
 - Con esos datos podrá saber el origen y destino de cada producto.
+
+## pregunta final
+- "Si tuvieras libertad total para mejorar un proceso digital en ecommerce usando backend + datos + inteligencia artificial, ¿qué harías y cómo lo llevarías a cabo?"
+- Implementar un motor de recomendaciones personalizado para aumentar el ticket promedio y la retención de clientes, aprovechando datos de navegación y compras previas y compras similares de perfiles que coincidan. 
+- cómo lo haría
+   Captura de eventos
+   Spring Boot + Apache Kafka: cada vez que un usuario vea o compre un producto, el frontend envía un evento VIEWED_PRODUCT o PURCHASED_PRODUCT a un topic en Kafka.
+   Procesamiento y entrenamiento
+-	AWS Glue (o un job de Spark local) lee los datos de S3, limpia y transforma:
+     o	Filtra usuarios con pocas interacciones.
+     o	Construye la matriz usuario–producto.
+     o	Amazon SageMaker (o un microservicio Python con scikit-learn) entrena un modelo sencillo de filtrado colaborativo (por ejemplo, K-Nearest Neighbors o Matrix Factorization).
+
+- El Frontend (React, Vue o Thymeleaf) consume /recommendations/{userId} y muestra la lista de productos recomendados en la página de inicio y en el checkout.
+Desarrollo del backend
+Configura productores y consumidores de Kafka.
+Implementa el endpoint /recommendations/{userId} que invoque al modelo.
+Añade Redis para cachear.
