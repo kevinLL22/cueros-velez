@@ -1,7 +1,6 @@
 package com.example.api_consumer.service;
 
 import com.example.api_consumer.model.dto.AddressDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -36,13 +35,13 @@ public class VTEXService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private final DestinyService destinyService;
+    private final DestinationService destinationService;
     private final Executor orderExecutor;
 
-    public VTEXService(RestTemplate restTemplate, ObjectMapper objectMapper, DestinyService destinyService, @Qualifier("orderExecutor")Executor orderExecutor) {
+    public VTEXService(RestTemplate restTemplate, ObjectMapper objectMapper, DestinationService destinationService, @Qualifier("orderExecutor")Executor orderExecutor) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
-        this.destinyService = destinyService;
+        this.destinationService = destinationService;
         this.orderExecutor = orderExecutor;
     }
 
@@ -76,8 +75,8 @@ public class VTEXService {
 
     private void processOne(String orderId) {
         String orderDetails = detailsOrder(orderId);
-        AddressDTO dto = destinyService.createDTOByJson(orderDetails);
-        destinyService.saveFromDto(dto);
+        AddressDTO dto = destinationService.createDTOByJson(orderDetails);
+        destinationService.saveFromDto(dto);
     }
 
     //return json

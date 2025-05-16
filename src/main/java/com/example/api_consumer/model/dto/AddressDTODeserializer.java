@@ -19,6 +19,7 @@ public class AddressDTODeserializer extends StdDeserializer<AddressDTO> {
         super(AddressDTO.class);
     }
 
+    /*
     @Override
     public AddressDTO deserialize(JsonParser p, DeserializationContext ctxt)
             throws IOException {
@@ -43,6 +44,8 @@ public class AddressDTODeserializer extends StdDeserializer<AddressDTO> {
 
         return new AddressDTO(productIds, creationDate, warehouseId, destinationCity);
     }
+
+     */
 
     @Override
     public AddressDTO deserialize(JsonParser p, DeserializationContext ctxt)

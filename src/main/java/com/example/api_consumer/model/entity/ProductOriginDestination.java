@@ -30,9 +30,5 @@ public class ProductOriginDestination {
     @Column(length = 50)
     private String destination;
 
-    @PrePersist
-    protected void onCreate() {
-        this.creationDate = LocalDateTime.now();
-    }
 
 }

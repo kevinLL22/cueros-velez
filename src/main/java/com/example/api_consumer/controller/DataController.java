@@ -1,71 +1,61 @@
 package com.example.api_consumer.controller;
 
-import com.example.api_consumer.model.dto.AddressDTO;
-import com.example.api_consumer.service.DestinyService;
+import com.example.api_consumer.service.DestinationService;
 import com.example.api_consumer.service.VTEXService;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.time.LocalDateTime;
 
-@RestController
 @Slf4j
+@RestController
+@RequestMapping("/data")
 public class DataController {
 
-    private final VTEXService VTEXService;
-    private final DestinyService destinyService;
+    private final DestinationService destinationService;
 
-    public DataController(VTEXService VTEXService, DestinyService destinyService) {
-        this.VTEXService = VTEXService;
-        this.destinyService = destinyService;
+    public DataController(DestinationService destinationService) {
+        this.destinationService = destinationService;
     }
 
-
-    /*
-    @GetMapping("/probar-api")
-    public String probarApi() {
-        //return apiService.fetchData();
-        return VTEXService.fetchDataWithFilter(
-                "2024-01-01T00:00:00.000Z",
-                "2024-01-31T23:59:59.999Z");
-    }
-
-
-
-    @GetMapping("/probar-api-2")
-    public String probarApi2() {
-        //return apiService.fetchData();
-        //return VTEXService.detailsOrder();
-    }
-
+    /**
+     * Endpoint para exportar datos a Excel.
+     * @param start fecha de inicio
+     * @param end fecha de fin
+     * @param response objeto HttpServletResponse para escribir el archivo
      */
+    @GetMapping("/export")
+    @SneakyThrows
+    public void exportToExcel(
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime start,
+            @RequestParam("end")   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime end,
+            HttpServletResponse response
+    )  {
+        // Configurar la respuesta HTTP
+        response.setContentType(
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
+        String filename = String.format(
+                "origins_%s_to_%s.xlsx",
+                start.toLocalDate(), end.toLocalDate()
+        );
+        response.setHeader(
+                HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\""
+        );
 
-    @GetMapping("/json")
-    public void testJson() {
-
-        //ArrayList<String> listIds = VTEXService.getOrdersIds();
-        //log.info("list size {}", listIds.size());
-        //log.info("list of ordersIds {}", listIds);
-
-        //VTEXService.createDTOByJson();
-    }
-
-    @PostMapping("/automatic")
-    public void automatic() {
-        /*en un caso real recibiriamos un rango de fechas para crear el URI
-         *en este caso se usará un URI ya construido
-        */
-
-    }
-
-    @GetMapping("/testJson")
-    public void testJson2() {
-        String jsonFromFile = destinyService.getJsonFromFile("info-1407433233021-01.json");
-        AddressDTO dtoByJson = destinyService.createDTOByJson(jsonFromFile);
-        log.info("DTO {} ", dtoByJson);
-        destinyService.saveFromDto(dtoByJson);
+        // Generar y escribir el Excel en el OutputStream
+        try (Workbook wb = destinationService.buildExcelReport(start, end)) {
+            wb.write(response.getOutputStream());
+        }
     }
 
 }
