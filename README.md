@@ -56,6 +56,11 @@ spring.datasource.username=tu_usuario
 spring.datasource.password=tu_contraseña
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
+# URL de la API a consumir
+api.url=https: URL_valida
+api.url2=https://cuerosvelezco.vtexcommercestable.com.br/api/oms/pvt/orders/
+api.token= token vigente
+
 # Pool HikariCP
 spring.datasource.hikari.maximum-pool-size=10
 spring.datasource.hikari.minimum-idle=2
@@ -65,14 +70,11 @@ spring.jpa.hibernate.ddl-auto=validate
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
 
-# Scheduler (opcional)
-vtex.scheduler.cron=0 0 * * * *
-# O también fixedRate en milisegundos
-dashboard.scheduler.rate=3600000
 ```
 ---
 
 ## Compilar y ejecutar
+(Si tiene un IDE como intellij o similares puede abrir el proyecto con el IDE y ejecutar desde ApiConsumerApplication)
 
 Desde la raíz del proyecto:
 
